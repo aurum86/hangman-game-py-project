@@ -21,10 +21,15 @@ pipenv install --three
 
 pipenv install -r requirements.txt
 ```
+## Setup project
+
+```bash
+python manage.py migrate
+```
 
 ## Run
 ```bash
-cd hangman_game
+cd hangman_project
 
 python manage.py runserver
 ```
