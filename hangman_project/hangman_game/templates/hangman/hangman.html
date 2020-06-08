@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Hangman game</title>
+</head>
+<body>
+
+<br />
+<div>
+    <h1 id="motivation">Can you guess the word?</h1>
+    <div class="content">
+        <h2 id="word_to_guess">{{ word_with_mask }}</h2>
+        <div class="controls">
+            <form action="{% url 'hangman_game:guess_letter' %}" method="post">
+                {% csrf_token %}
+                <label for="letter">Guess a letter:</label>
+                <input type="text" id="letter" name="letter"><br><br>
+                <input type="submit" value="Guess">
+            </form>
+
+            <h3 id="ready_to_guess_word">Are you ready to guess a word?</h3>
+
+            <form action="{% url 'hangman_game:guess_word' %}" method="post">
+                {% csrf_token %}
+                <label for="word">Guess a word!:</label>
+                <input type="text" id="word" name="word"><br><br>
+                <input type="submit" value="Guess">
+            </form>
+        </div>
+        <div>
+            <h3 class="status">{{ error_message }}</h3>
+            <h1 class="status">{{ status_level }}</h1>
+        </div>
+    </div>
+</div>
+</body>
+</html>
