@@ -1,5 +1,6 @@
 from django.test import TestCase
 from unittest_data_provider import data_provider
+from unittest.mock import patch
 from ..src.services import *
 
 
@@ -70,4 +71,19 @@ class SecretWordTest(TestCase):
 
         _secret_word = SecretWord('')
         self.assertEqual(0, _secret_word.get_length())
+
+
+# @patch('..src.services.SecretWord')
+# class HangmanTest(TestCase):
+#
+#     def setUp(self) -> None:
+#         super().setUp()
+#
+        # patcher = patch('..src.services.SecretWord')
+        # self.addCleanup(patcher.stop)
+        # self._secret_word_mock = patcher.start()
+    #
+    # def test_ask_for_letter(self, SecretWordMock) -> None:
+    #     self.assertIs(SecretWord, SecretWordMock)
+#
 

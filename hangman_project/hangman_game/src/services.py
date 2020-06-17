@@ -21,24 +21,24 @@ class GameStatus:
         STATUS_GAME_OVER
     ]
 
-    def __init__(self, initial_status: STATUSES = STATUS_BEGIN):
+    def __init__(self, initial_status: STATUSES = STATUS_BEGIN) -> None:
         self._status = initial_status
 
     @property
     def status(self) -> STATUSES:
         return self._status
 
-    def set_next(self):
+    def set_next(self) -> None:
         current_index = self.STATUSES.index(self.status)
         if self.STATUS_GAME_OVER == self.status:
             return
 
         self._status = self.STATUSES[current_index + 1]
 
-    def reset(self):
+    def reset(self) -> None:
         self._status = self.STATUS_BEGIN
 
-    def finish_game(self, is_winner: bool):
+    def finish_game(self, is_winner: bool) -> None:
         if is_winner:
             self._status = self.STATUS_WIN
         else:
@@ -48,7 +48,7 @@ class GameStatus:
 class SecretWord:
     """contains a secret word"""
 
-    def __init__(self, secret_word: str):
+    def __init__(self, secret_word: str) -> None:
         self._secret_word = secret_word
 
     def get_letter_positions(self, letter: str) -> list:
@@ -61,39 +61,58 @@ class SecretWord:
         return len(self._secret_word)
 
 
-class Knowledge:
-    """stores what is revealed"""
-
-    _UNKNOWN_CHAR = '*'
-
-    def __init__(self, word_length: int):
-        self._word_length = word_length
-        self._word = None
-
-    def get_word(self, unknown_char_shown_as: str = _UNKNOWN_CHAR):
-        if self._word is None:
-            return unknown_char_shown_as * self._word_length
-        else:
-            return self._word
-
-
 class Hangman:
     """defines a way to guess"""
 
     def __init__(self,
                  secret_word: SecretWord,
                  game_status: GameStatus
-                 ):
+                 ) -> None:
         self._secret_word = secret_word
         self._game_status = game_status
 
-    def ask_for_letter(self, letter: str):
+    def ask_for_letter(self, letter: str) -> list:
         positions = self._secret_word.get_letter_positions(letter)
         if not positions:
             self._game_status.set_next()
+        else:
+            return positions
 
-    def ask_for_word(self, word: str):
-        self._game_status.finish_game(self._secret_word.is_word(word))
+    def ask_for_word(self, word: str) -> bool:
+        is_word = self._secret_word.is_word(word)
+        self._game_status.finish_game(is_word)
+
+        return is_word
 
     def get_game_status(self) -> GameStatus.STATUSES:
         return self._game_status.status
+
+    def is_game_finished(self) -> bool:
+        return self._game_status.status in [GameStatus.STATUS_WIN, GameStatus.STATUS_GAME_OVER]
+
+    def get_word_length(self) -> int:
+        return self._secret_word.get_length()
+
+
+class Knowledge:
+    """stores what is revealed"""
+
+    _UNKNOWN_CHAR = '*'
+
+    def __init__(self, hangman: Hangman, known_word: str = None):
+        self._hangman = hangman
+        self._known_word = known_word
+
+    def get_word(self, unknown_char_shown_as: str = _UNKNOWN_CHAR) -> str:
+        if self._known_word is None:
+            return unknown_char_shown_as * self._hangman.get_word_length()
+        else:
+            return self._known_word
+
+    def set_letters(self, positions: list, letter: str) -> None:
+        if not positions:
+            return
+
+        self._known_word = ''.join([letter if i in positions else char for i, char in enumerate(self.get_word())])
+
+
