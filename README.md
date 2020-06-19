@@ -34,6 +34,11 @@ cd hangman_project
 python manage.py runserver
 ```
 
+## Run tests
+```bash
+cd hangman_project
+pytest
+```
 
 ## Other useful commands
 

@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 unittest-data-provider = "*"
+pytest-mock = "*"
+pytest-django = "*"
+mock = "*"
 
 [packages]
 django = "==3.0.7"
