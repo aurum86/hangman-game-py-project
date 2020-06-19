@@ -75,6 +75,8 @@ class Hangman:
         positions = self._secret_word.get_letter_positions(letter)
         if not positions:
             self._game_status.set_next()
+
+            return []
         else:
             return positions
 

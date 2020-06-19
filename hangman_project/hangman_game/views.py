@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpRequest
-from .src.services import *
+from .game import *
 
 
 _some_secret_word = 'sunrise'
@@ -77,11 +77,12 @@ def guess_word(request):
             )
         )
 
+    is_word_correct = False
     if not _hangman.is_game_finished():
-        _hangman.ask_for_word(word)
+        is_word_correct = _hangman.ask_for_word(word)
 
     return render(request=request, template_name='hangman/hangman.html', context=_game_content(
         {},
-        _knowledge.get_word(),
+        word if is_word_correct else _knowledge.get_word(),
         _hangman.get_game_status()
     ))
