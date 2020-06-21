@@ -6,10 +6,9 @@ from .game import *
 
 _some_secret_word = 'sunrise'
 _known_word = None
-_game_status = GameStatus.STATUS_BEGIN
-
 _secret_word = SecretWord(_some_secret_word)
-_hangman = Hangman(_secret_word, GameStatus(_game_status))
+_game_status = GameStatus(GameStatus.STATUS_BEGIN)
+_hangman = Hangman(_secret_word, _game_status)
 _knowledge = Knowledge(_hangman, _known_word)
 
 
@@ -33,6 +32,9 @@ def validation_error_content(page_content: dict, error_message: str):
 
 
 def hangman(request):
+    _game_status.reset()
+    _knowledge = Knowledge(_hangman, _known_word)
+
     return render(request=request, template_name='hangman/hangman.html', context=_game_content(
         {},
         _knowledge.get_word(),
