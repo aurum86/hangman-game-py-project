@@ -26,6 +26,8 @@ class GameStatusTest(TestCase):
         self._game_status.set_next()
         self.assertIs(GameStatus.STATUS_FAIL_5, self._game_status.status)
         self._game_status.set_next()
+        self.assertIs(GameStatus.STATUS_FAIL_6, self._game_status.status)
+        self._game_status.set_next()
         self.assertIs(GameStatus.STATUS_GAME_OVER, self._game_status.status)
         self._game_status.set_next()
         self.assertIs(GameStatus.STATUS_GAME_OVER, self._game_status.status)

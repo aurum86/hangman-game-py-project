@@ -8,7 +8,8 @@ class GameStatus:
     STATUS_FAIL_3 = 3
     STATUS_FAIL_4 = 4
     STATUS_FAIL_5 = 5
-    STATUS_GAME_OVER = 6
+    STATUS_FAIL_6 = 6
+    STATUS_GAME_OVER = 7
 
     STATUSES = [
         STATUS_WIN,
@@ -18,6 +19,7 @@ class GameStatus:
         STATUS_FAIL_3,
         STATUS_FAIL_4,
         STATUS_FAIL_5,
+        STATUS_FAIL_6,
         STATUS_GAME_OVER
     ]
 

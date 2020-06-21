@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>The Hangman game</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'hangman_game/style.css' %}">
 </head>
 <body>
 
@@ -27,10 +30,18 @@
                 <input type="text" id="word" name="word"><br><br>
                 <input type="submit" value="Guess">
             </form>
+
+            <form action="{% url 'hangman_game:hangman' %}">
+                <input type="submit" value="Restart game" />
+            </form>
         </div>
-        <div>
-            <h3 class="status">{{ error_message }}</h3>
-            <h1 class="status">{{ status_level }}</h1>
+        <div class="status">
+            {% with status_level=status_level|stringformat:"s" %}
+                {% with image_path='hangman_game/game_status/hm_'|add:status_level|add:'.png' %}
+                <img src="{% static image_path %}" alt="{{ status_level }}">
+                {% endwith %}
+            {% endwith %}
+            <h3 class="error_message">{{ error_message }}</h3>
         </div>
     </div>
 </div>
