@@ -15,6 +15,7 @@
     <div class="content">
         <h2 id="word_to_guess">{{ word_with_mask }}</h2>
         <div class="controls">
+            {% if status_level != 7 %}
             <form action="{% url 'hangman_game:guess_letter' %}" method="post">
                 {% csrf_token %}
                 <label for="letter">Guess a letter:</label>
@@ -30,7 +31,15 @@
                 <input type="text" id="word" name="word"><br><br>
                 <input type="submit" value="Guess">
             </form>
-
+            {% else %}
+                {% if secret_word == word_with_mask %}
+                <h1>You are free!</h1>
+                {% else %}
+                <h1>You are hanged!</h1>
+                {% endif %}
+            <h4>The correct word was:</h4>
+            <h2>{{ secret_word }}</h2>
+            {% endif %}
             <form action="{% url 'hangman_game:hangman' %}">
                 <input type="submit" value="Restart game" />
             </form>

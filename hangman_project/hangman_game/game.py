@@ -62,6 +62,9 @@ class SecretWord:
     def get_length(self) -> int:
         return len(self._secret_word)
 
+    def get_word(self) -> str:
+        return self._secret_word
+
 
 class Hangman:
     """defines a way to guess"""
