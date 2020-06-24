@@ -1,6 +1,6 @@
-
 class GameStatus:
     """A class to determine game status"""
+
     STATUS_WIN = -1
     STATUS_BEGIN = 0
     STATUS_FAIL_1 = 1
@@ -20,7 +20,7 @@ class GameStatus:
         STATUS_FAIL_4,
         STATUS_FAIL_5,
         STATUS_FAIL_6,
-        STATUS_GAME_OVER
+        STATUS_GAME_OVER,
     ]
 
     def __init__(self, initial_status: STATUSES = STATUS_BEGIN) -> None:
@@ -69,10 +69,7 @@ class SecretWord:
 class Hangman:
     """defines a way to guess"""
 
-    def __init__(self,
-                 secret_word: SecretWord,
-                 game_status: GameStatus
-                 ) -> None:
+    def __init__(self, secret_word: SecretWord, game_status: GameStatus) -> None:
         self._secret_word = secret_word
         self._game_status = game_status
 
@@ -95,7 +92,10 @@ class Hangman:
         return self._game_status.status
 
     def is_game_finished(self) -> bool:
-        return self._game_status.status in [GameStatus.STATUS_WIN, GameStatus.STATUS_GAME_OVER]
+        return self._game_status.status in [
+            GameStatus.STATUS_WIN,
+            GameStatus.STATUS_GAME_OVER,
+        ]
 
     def get_word_length(self) -> int:
         return self._secret_word.get_length()
@@ -104,7 +104,7 @@ class Hangman:
 class Knowledge:
     """stores what is revealed"""
 
-    _UNKNOWN_CHAR = '*'
+    _UNKNOWN_CHAR = "*"
 
     def __init__(self, hangman: Hangman, known_word: str = None):
         self._hangman = hangman
@@ -120,6 +120,9 @@ class Knowledge:
         if not positions:
             return
 
-        self._known_word = ''.join([letter if i in positions else char for i, char in enumerate(self.get_word())])
-
-
+        self._known_word = "".join(
+            [
+                letter if i in positions else char
+                for i, char in enumerate(self.get_word())
+            ]
+        )

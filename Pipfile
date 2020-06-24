@@ -9,6 +9,7 @@ unittest-data-provider = "*"
 pytest-mock = "*"
 pytest-django = "*"
 mock = "*"
+black = "*"
 
 [packages]
 django = "==3.0.7"
