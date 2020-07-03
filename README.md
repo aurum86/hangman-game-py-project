@@ -32,6 +32,15 @@ python manage.py migrate
 cd hangman_project
 
 python manage.py runserver
+
+# then click on the link provided in the terminal output
+```
+## Run in docker container
+```
+cd docker
+
+docker-compose up
+# then click on the link provided in the terminal output
 ```
 
 ## Run tests
@@ -40,8 +49,19 @@ cd hangman_project
 
 # and then
 pytest
+
 # or
 python manage.py test
+```
+### Run tests in docker container
+```
+cd docker
+
+# build an image
+docker build .. -f Dockerfile -t hangman_game:latest
+
+# run tests in temporary container based on image given image
+docker run -it --tty --rm hangman_game:latest sh -c 'pytest'
 ```
 
 ## Other useful commands
