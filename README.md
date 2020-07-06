@@ -2,6 +2,8 @@
 
 A conventional hangman game
 
+[![Build Status](https://github.com/aurum86/hangman-game-py-project/workflows/Django%20CI/badge.svg)](https://github.com/aurum86/hangman-game-py-project)
+
 ## Requirements
 ```bash
 sudo apt-get install python3-pip python3-dev python3-venv python3.8-venv
