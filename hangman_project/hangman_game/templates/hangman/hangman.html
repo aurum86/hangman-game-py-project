@@ -1,58 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>The Hangman game</title>
+{% extends "hangman/base.html" %}
 
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'hangman_game/style.css' %}">
-</head>
-<body>
+{% load static %}
 
-<br />
-<div>
-    <h1 id="motivation">Can you guess the word and avoid the gallows?</h1>
-    <div class="content">
-        <h2 id="word_to_guess">{{ word_with_mask }}</h2>
-        <div class="controls">
+{% block content %}
+<div id="container-fluid">
+    <div class="row" id="menu">
+        <div class="col">
+            <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#restartGameModal">
+              Restart game
+            </button>
+            <a type="button" class="btn btn-outline-dark" href="game_options">
+              Options
+            </a>
+        </div>
+    </div>
+    <h5 id="motivation">Can you guess the word and avoid the gallows?</h5>
+    <h2 id="word_to_guess">{{ word_with_mask }}</h2>
+    <div class="row" id="row">
+        <div class="col-lg-6" id="controls">
             {% if status_level != 7 %}
-            <form action="{% url 'hangman_game:guess_letter' %}" method="post">
+            <form action="{% url 'hangman_game:guess_letter' %}" method="post" class="form-group">
                 {% csrf_token %}
-                <label for="letter">Guess a letter:</label>
-                <input type="text" id="letter" name="letter"><br><br>
-                <input type="submit" value="Guess">
+                <div class="form-row">
+                    <div class="col">
+                        <label for="letter">Guess a letter:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" id="letter" name="letter" class="form-control" maxlength="1"><br><br>
+                    </div>
+                    <div class="col">
+                        <input type="submit" value="Guess" class="btn btn-outline-primary">
+                    </div>
+                </div>
             </form>
 
-            <h3 id="ready_to_guess_word">Are you ready to guess a word?</h3>
+            <h5 id="ready_to_guess_word">Are you ready to guess a word?</h5>
 
-            <form action="{% url 'hangman_game:guess_word' %}" method="post">
+            <form action="{% url 'hangman_game:guess_word' %}" method="post" class="form-group">
                 {% csrf_token %}
-                <label for="word">Guess a word!:</label>
-                <input type="text" id="word" name="word"><br><br>
-                <input type="submit" value="Guess">
+                <div class="form-row">
+                    <div class="col">
+                        <label for="word">Guess a word!:</label>
+                    </div>
+                    <div class="col-5">
+                        <input type="text" id="word" name="word" class="form-control"><br><br>
+                    </div>
+                    <div class="col">
+                        <input type="submit" value="Guess" class="btn btn-outline-primary">
+                    </div>
+                </div>
             </form>
             {% else %}
                 {% if secret_word == word_with_mask %}
-                <h1>You are free!</h1>
+                <div class="alert alert-success" role="alert">
+                    <h1>You are free!</h1>
+                </div>
                 {% else %}
-                <h1>You are hanged!</h1>
+                <div class="alert alert-danger" role="alert">
+                    <h1>You are hanged!</h1>
+                </div>
                 {% endif %}
             <h4>The correct word was:</h4>
             <h2>{{ secret_word }}</h2>
             {% endif %}
-            <form action="{% url 'hangman_game:hangman' %}">
-                <input type="submit" value="Restart game" />
-            </form>
+
+            {% if error_message %}
+            <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+            {% endif %}
         </div>
-        <div class="status">
+        <div class="col-lg-6" id="status">
             {% with status_level=status_level|stringformat:"s" %}
                 {% with image_path='hangman_game/game_status/hm_'|add:status_level|add:'.png' %}
-                <img src="{% static image_path %}" alt="{{ status_level }}">
+                <img src="{% static image_path %}" alt="{{ status_level }}" class="img-fluid">
                 {% endwith %}
             {% endwith %}
-            <h3 class="error_message">{{ error_message }}</h3>
         </div>
     </div>
 </div>
-</body>
-</html>
+
+{% include "hangman/modal.html" with modal_id="restartGameModal" modal_title="Start a new game?" modal_content="Restarting a game will make you lose the progress in the current game." modal_yes="Yes, let's restart it!" modal_no="No, get me back" %}
+
+{% endblock %}
+
