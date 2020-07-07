@@ -5,7 +5,8 @@ from .game import *
 from .words import *
 
 
-_secret_word = SecretWord(secret_word=get_random_word())
+_word_length_range = (2, 100)
+_secret_word = SecretWord(secret_word=get_random_word(_word_length_range))
 _game_status = GameStatus(GameStatus.STATUS_BEGIN)
 _hangman = Hangman(_secret_word, _game_status)
 _knowledge = Knowledge(hangman=_hangman, known_word=None)
@@ -38,8 +39,9 @@ def hangman(request):
     global _game_status
     global _hangman
     global _knowledge
+    global _word_length_range
 
-    _secret_word = SecretWord(secret_word=get_random_word())
+    _secret_word = SecretWord(secret_word=get_random_word(_word_length_range))
     _game_status = GameStatus(GameStatus.STATUS_BEGIN)
     _hangman = Hangman(_secret_word, _game_status)
     _knowledge = Knowledge(hangman=_hangman, known_word=None)
@@ -63,6 +65,8 @@ def guess_letter(request: HttpRequest):
                 "You didn't provide a valid letter (must be one and only one).",
             ),
         )
+
+    letter = letter.lower()
 
     if not _hangman.is_game_finished():
         positions = _hangman.ask_for_letter(letter)
@@ -95,6 +99,8 @@ def guess_word(request):
                 "You didn't provide a word.",
             ),
         )
+
+    word = word.lower()
 
     if not _hangman.is_game_finished():
         _hangman.ask_for_word(word)
