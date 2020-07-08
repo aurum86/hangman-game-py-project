@@ -18,7 +18,7 @@
     <h2 id="word_to_guess">{{ word_with_mask }}</h2>
     <div class="row" id="row">
         <div class="col-lg-6" id="controls">
-            {% if status_level != 7 %}
+            {% if not is_game_finished or False %}
             <form action="{% url 'hangman_game:guess_letter' %}" method="post" class="form-group">
                 {% csrf_token %}
                 <div class="form-row">
@@ -51,7 +51,7 @@
                 </div>
             </form>
             {% else %}
-                {% if secret_word == word_with_mask %}
+                {% if is_word_correct or False %}
                 <div class="alert alert-success" role="alert">
                     <h1>You are free!</h1>
                 </div>
@@ -60,8 +60,9 @@
                     <h1>You are hanged!</h1>
                 </div>
                 {% endif %}
-            <h4>The correct word was:</h4>
-            <h2>{{ secret_word }}</h2>
+
+                <h4>The correct word was:</h4>
+                <h2>{{ secret_word }}</h2>
             {% endif %}
 
             {% if error_message %}

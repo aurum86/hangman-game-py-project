@@ -133,7 +133,7 @@ class HangmanTest(TestCase):
 
         self.assertEqual(expected_game_finished, self._hangman.is_game_finished())
 
-    def test_get_word_length(self):
+    def test_get_word_length(self) -> None:
         self._mock_secret_word.get_length.return_value = 5
 
         self.assertEqual(5, self._hangman.get_word_length())
@@ -141,3 +141,24 @@ class HangmanTest(TestCase):
         self._mock_secret_word.get_length.return_value = 0
 
         self.assertEqual(0, self._hangman.get_word_length())
+
+
+class KnowledgeTest(TestCase):
+    def setUp(self) -> None:
+        super().setUp()
+
+        self._mock_hangman = MagicMock(spec=Hangman)
+
+    @data_provider(
+        lambda: (
+                (False, '*********'),
+                (False, '*********a'),
+                (False, '*d*a*w*v*a'),
+                (True, 'someRevealedWord'),
+                (False, 'someNotFullyRevealedWor*'),
+        )
+    )
+    def test_is_word_fully_revealed(self, expected: bool, word: str) -> None:
+        _knowledge = Knowledge(self._mock_hangman, word)
+
+        self.assertEqual(expected, _knowledge.is_word_fully_revealed())

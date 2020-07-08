@@ -67,7 +67,7 @@ class SecretWord:
 
 
 class Hangman:
-    """defines a way to guess"""
+    """controls questions and punishment"""
 
     def __init__(self, secret_word: SecretWord, game_status: GameStatus) -> None:
         self._secret_word = secret_word
@@ -110,6 +110,7 @@ class Knowledge:
         self._hangman = hangman
         self._known_word = known_word
 
+    # TODO: this parameter "unknown_char_shown_as" should be removed from here
     def get_word(self, unknown_char_shown_as: str = _UNKNOWN_CHAR) -> str:
         if self._known_word is None:
             return unknown_char_shown_as * self._hangman.get_word_length()
@@ -126,3 +127,6 @@ class Knowledge:
                 for i, char in enumerate(self.get_word())
             ]
         )
+
+    def is_word_fully_revealed(self) -> bool:
+        return self._known_word.count(self._UNKNOWN_CHAR) == 0
