@@ -130,3 +130,55 @@ class Knowledge:
 
     def is_word_fully_revealed(self) -> bool:
         return self._known_word.count(self._UNKNOWN_CHAR) == 0
+
+
+class Convict:
+    """Interacts with the Hangman based on the Knowledge possessed"""
+
+    def __init__(self, hangman: Hangman, knowledge: Knowledge):
+        self._hangman = hangman
+        self._knowledge = knowledge
+
+    def get_known_word(self) -> str:
+        return self._knowledge.get_word()
+
+    def get_game_status(self) -> GameStatus.STATUSES:
+        return self._hangman.get_game_status()
+
+    def guess_word(self, word: str) -> bool:
+        return self._hangman.ask_for_word(word)
+
+    def is_game_finished(self) -> bool:
+        return self._hangman.is_game_finished()
+
+    def guess_letter(self, letter: str) -> bool:
+        _positions = self._hangman.ask_for_letter(letter)
+        self._knowledge.set_letters(_positions, letter)
+
+        if self._knowledge.is_word_fully_revealed():
+            return self._hangman.ask_for_word(self._knowledge.get_word())
+
+        return len(_positions) > 0
+
+
+class ConvictFactory:
+    @classmethod
+    def create_convict(cls, secret_word: SecretWord) -> Convict:
+        _game_status = GameStatus(GameStatus.STATUS_BEGIN)
+        _hangman = Hangman(secret_word=secret_word, game_status=_game_status)
+        _knowledge = Knowledge(hangman=_hangman, known_word=None)
+
+        return Convict(
+            hangman=_hangman,
+            knowledge=_knowledge
+        )
+
+
+class SecretWordFactory:
+    def __init__(self, words):
+        self._words = words
+
+    def create_secret_word(self, word_length_range: tuple):
+        _random_word = self._words.get_random_word(word_length_range).lower()
+
+        return SecretWord(secret_word=_random_word)
