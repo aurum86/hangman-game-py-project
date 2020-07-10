@@ -168,10 +168,7 @@ class ConvictFactory:
         _hangman = Hangman(secret_word=secret_word, game_status=_game_status)
         _knowledge = Knowledge(hangman=_hangman, known_word=None)
 
-        return Convict(
-            hangman=_hangman,
-            knowledge=_knowledge
-        )
+        return Convict(hangman=_hangman, knowledge=_knowledge)
 
 
 class SecretWordFactory:

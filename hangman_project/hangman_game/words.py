@@ -11,15 +11,15 @@ def get_word_list() -> list:
 
 def filter_words(word_list: list, by_word_length_range: tuple) -> list:
 
-    return list(filter(
-        lambda word: len(word) in range(by_word_length_range[0], by_word_length_range[1]),
-        word_list
-    ))
+    return list(
+        filter(
+            lambda word: len(word)
+            in range(by_word_length_range[0], by_word_length_range[1]),
+            word_list,
+        )
+    )
 
 
 def get_random_word(filter_by_word_length_range: tuple) -> str:
 
-    return random.choice(filter_words(
-        get_word_list(),
-        filter_by_word_length_range
-    ))
+    return random.choice(filter_words(get_word_list(), filter_by_word_length_range))

@@ -151,11 +151,11 @@ class KnowledgeTest(TestCase):
 
     @data_provider(
         lambda: (
-                (False, '*********'),
-                (False, '*********a'),
-                (False, '*d*a*w*v*a'),
-                (True, 'someRevealedWord'),
-                (False, 'someNotFullyRevealedWor*'),
+            (False, "*********"),
+            (False, "*********a"),
+            (False, "*d*a*w*v*a"),
+            (True, "someRevealedWord"),
+            (False, "someNotFullyRevealedWor*"),
         )
     )
     def test_is_word_fully_revealed(self, expected: bool, word: str) -> None:
@@ -170,7 +170,9 @@ class ConvictTest(TestCase):
 
         self._mock_hangman = MagicMock(spec=Hangman)
         self._mock_knowledge = MagicMock(spec=Knowledge)
-        self._convict = Convict(hangman=self._mock_hangman, knowledge=self._mock_knowledge)
+        self._convict = Convict(
+            hangman=self._mock_hangman, knowledge=self._mock_knowledge
+        )
 
     def test_get_known_word(self) -> None:
         self._mock_knowledge.get_word.return_value = "someword"
@@ -194,30 +196,33 @@ class ConvictTest(TestCase):
 
     @data_provider(
         lambda: (
-                (False, [], False, False),
-                (True, [1], False, False),
-                (True, [1], True, True),
-                (True, [], True, True),
+            (False, [], False, False),
+            (True, [1], False, False),
+            (True, [1], True, True),
+            (True, [], True, True),
         )
     )
     def test_guess_letter(
-            self,
-            expected_is_correct: bool,
-            assume_letter_positions: list,
-            assume_is_word_fully_revealed: bool,
-            expect_ask_for_word_is_called: bool
+        self,
+        expected_is_correct: bool,
+        assume_letter_positions: list,
+        assume_is_word_fully_revealed: bool,
+        expect_ask_for_word_is_called: bool,
     ) -> None:
         self._mock_hangman.ask_for_letter.return_value = assume_letter_positions
         self._mock_hangman.ask_for_word.return_value = True
 
-        self._mock_knowledge.is_word_fully_revealed.return_value = assume_is_word_fully_revealed
+        self._mock_knowledge.is_word_fully_revealed.return_value = (
+            assume_is_word_fully_revealed
+        )
         self._mock_knowledge.get_word.return_value = "somew*rd"
 
         self.assertEqual(expected_is_correct, self._convict.guess_letter("s"))
 
-        self._mock_knowledge.set_letters.assert_called_with(assume_letter_positions, "s")
+        self._mock_knowledge.set_letters.assert_called_with(
+            assume_letter_positions, "s"
+        )
         if expect_ask_for_word_is_called:
             self._mock_hangman.ask_for_word.assert_called_with("somew*rd")
         else:
             self._mock_hangman.ask_for_word.assert_not_called()
-

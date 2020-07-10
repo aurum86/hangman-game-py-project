@@ -1,23 +1,26 @@
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.http import HttpRequest
+import django.contrib.admin
 from . import game
 from . import words
 from . import game_options
 
+g_game_options = game_options.GameOptions(difficulty_level=1)
+_word_length_range = (
+    g_game_options.get_word_length_min(),
+    g_game_options.get_word_length_max(),
+)
 
-g_game_options = game_options.GameOptions(1)
-_word_length_range = (g_game_options.get_word_length_min(), g_game_options.get_word_length_max())
-g_secret_word = game.SecretWordFactory(words).create_secret_word(_word_length_range)
-g_convict = game.ConvictFactory.create_convict(g_secret_word)
+g_secret_word = game.SecretWordFactory(words).create_secret_word(
+    word_length_range=_word_length_range
+)
+g_convict = game.ConvictFactory.create_convict(secret_word=g_secret_word)
 
 
 def _game_content(view_content: dict, word_with_mask: str, game_status: int) -> dict:
     view_content.update(
-        {
-            "word_with_mask": word_with_mask,
-            "status_level": game_status,
-        }
+        {"word_with_mask": word_with_mask, "status_level": game_status,}
     )
 
     return view_content
@@ -39,7 +42,10 @@ def hangman(request):
     global g_secret_word
     global g_convict
 
-    _word_length_range = (g_game_options.get_word_length_min(), g_game_options.get_word_length_max())
+    _word_length_range = (
+        g_game_options.get_word_length_min(),
+        g_game_options.get_word_length_max(),
+    )
     g_secret_word = game.SecretWordFactory(words).create_secret_word(_word_length_range)
 
     g_convict = game.ConvictFactory.create_convict(g_secret_word)
@@ -47,7 +53,9 @@ def hangman(request):
     return render(
         request=request,
         template_name="hangman/hangman.html",
-        context=_game_content({}, g_convict.get_known_word(), g_convict.get_game_status()),
+        context=_game_content(
+            {}, g_convict.get_known_word(), g_convict.get_game_status()
+        ),
     )
 
 
@@ -56,7 +64,9 @@ def guess_letter(request: HttpRequest):
     letter = letter.lower()
 
     if len(letter) != 1:
-        return validation_content(request, "You didn't provide a valid letter (must be one and only one).")
+        return validation_content(
+            request, "You didn't provide a valid letter (must be one and only one)."
+        )
 
     if g_convict.is_game_finished():
         return validation_content(request, "Game is already over.")
@@ -68,9 +78,11 @@ def guess_letter(request: HttpRequest):
         template_name="hangman/hangman.html",
         context=_game_content(
             {
-                "secret_word": g_secret_word.get_word() if g_convict.is_game_finished() else None,
+                "secret_word": g_secret_word.get_word()
+                if g_convict.is_game_finished()
+                else None,
                 "is_game_finished": g_convict.is_game_finished(),
-                "is_correct": _is_correct
+                "is_correct": _is_correct,
             },
             g_convict.get_known_word(),
             g_convict.get_game_status(),
@@ -95,7 +107,9 @@ def guess_word(request):
         template_name="hangman/hangman.html",
         context=_game_content(
             {
-                "secret_word": g_secret_word.get_word() if g_convict.is_game_finished() else None,
+                "secret_word": g_secret_word.get_word()
+                if g_convict.is_game_finished()
+                else None,
                 "is_game_finished": g_convict.is_game_finished(),
                 "is_correct": _is_correct,
             },
@@ -108,9 +122,7 @@ def guess_word(request):
 def view_game_options(request):
 
     return render(
-        request=request,
-        template_name="hangman/game_options.html",
-        context={}
+        request=request, template_name="hangman/game_options.html", context={}
     )
 
 
