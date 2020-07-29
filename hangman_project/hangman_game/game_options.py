@@ -10,14 +10,14 @@ class GameOptions:
 
     @property
     def difficulty_level(self) -> int:
-        return self._difficulty_level
+        return self.__difficulty_level
 
     @difficulty_level.setter
     def difficulty_level(self, value) -> None:
         if value not in range(self.DIFFICULTY_LEVEL_MIN, self.DIFFICULTY_LEVEL_MAX + 1):
             raise Exception("difficulty level ({}) is not valid".format(value))
 
-        self._difficulty_level = value
+        self.__difficulty_level = value
 
     def get_word_length_min(self) -> int:
         if self.difficulty_level == self.DIFFICULTY_LEVEL_MIN:

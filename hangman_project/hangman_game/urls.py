@@ -1,14 +1,18 @@
 from django.urls import path
 
-from . import views
+from .views import main
+from .views import game
+from .views import game_options
 
 app_name = "hangman_game"
 
 urlpatterns = [
-    path("", views.redirect_view, name="hangman-home"),
-    path("hangman/", views.hangman, name="hangman"),
-    path("guess_letter", views.guess_letter, name="guess_letter"),
-    path("guess_word", views.guess_word, name="guess_word"),
-    path("hangman/game_options", views.view_game_options, name="game_options"),
-    path("hangman/save_options", views.save_options, name="save_options"),
+    path("", main.redirect_view, name="hangman_home"),
+    path("hangman/", game.hangman, name="hangman"),
+    path("guess_letter", game.guess_letter, name="guess_letter"),
+    path("guess_word", game.guess_word, name="guess_word"),
+    path("game_options", game_options.view_game_options, name="game_options"),
+    path("hangman/game_options", game_options.view_game_options, name="game_options"),
+    path("save_options", game_options.save_options, name="save_options"),
+    path("hangman/save_options", game_options.save_options, name="save_options"),
 ]
