@@ -1,4 +1,4 @@
-from . import words
+from .. import words
 import collections
 
 

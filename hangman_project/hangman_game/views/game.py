@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpRequest
-from .. import game
+from ..game import game
 from ..words import WordProvider
-from .game_options import g_game_options
-from .. import statistics
+from .options import g_game_options
+from ..game import statistics
 from django.views import generic
 import collections
 

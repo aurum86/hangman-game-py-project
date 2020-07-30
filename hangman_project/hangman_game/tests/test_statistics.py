@@ -1,7 +1,5 @@
 from django.test import TestCase
-from unittest_data_provider import data_provider
-from mock import MagicMock
-from .statistics import *
+from ..game.statistics import *
 
 
 class GuessHistoryTest(TestCase):

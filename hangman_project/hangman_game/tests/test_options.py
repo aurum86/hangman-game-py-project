@@ -1,6 +1,6 @@
 from django.test import TestCase
 from unittest_data_provider import data_provider
-from .game_options import *
+from ..game.options import *
 import sys
 
 

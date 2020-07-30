@@ -1,7 +1,7 @@
 from django.test import TestCase
 from unittest_data_provider import data_provider
 from mock import MagicMock
-from .game import *
+from ..game.game import *
 
 
 class GameStatusTest(TestCase):

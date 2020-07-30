@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from .main import get_post_response
-from .. import game_options
+from ..game import options
 
-
-g_game_options = game_options.GameOptions(difficulty_level=1)
+g_game_options = options.GameOptions(difficulty_level=1)
 
 
 def view_game_options(request):

@@ -2,8 +2,8 @@ from django.test import TestCase
 from unittest_data_provider import data_provider
 from mock import MagicMock
 
-from .views.game import KnownWordPrinter
-from . import game
+from ..views.game import KnownWordPrinter
+from ..game import game
 
 
 class KnownWordPrinterTest(TestCase):
