@@ -16,6 +16,10 @@
     </div>
     <h5 id="motivation">Can you guess the word and avoid the gallows?</h5>
     <h2 id="word_to_guess">{{ word_with_mask }}</h2>
+
+    <h6 id="guess_history_label">Your guesses so far:</h6>
+    <h6 id="guess_history" class="font-weight-bold"> {{ guess_history|join:", " }}</h6>
+
     <div class="row" id="row">
         <div class="col-lg-6" id="controls">
             {% if not is_game_finished or False %}

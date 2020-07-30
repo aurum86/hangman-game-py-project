@@ -3,6 +3,7 @@ from django.http import HttpRequest
 from .. import game
 from ..words import WordProvider
 from .game_options import g_game_options
+from .. import statistics
 from django.views import generic
 import collections
 
@@ -39,11 +40,18 @@ g_secret_word = game.SecretWordFactory(g_wordProvider).create_secret_word(
 g_convict = game.ConvictFactory.create_convict(secret_word=g_secret_word)
 
 g_known_word_printer = KnownWordPrinter(convict=g_convict, secret_word=g_secret_word)
+g_guess_history = statistics.GuessHistory()
 
 
-def __game_content(view_content: dict, word_with_mask: str, game_status: int) -> dict:
+def __game_content(
+    view_content: dict, word_with_mask: str, game_status: int, guess_history: list
+) -> dict:
     view_content.update(
-        {"word_with_mask": word_with_mask, "status_level": game_status,}
+        {
+            "word_with_mask": word_with_mask,
+            "status_level": game_status,
+            "guess_history": guess_history,
+        }
     )
 
     return view_content
@@ -61,6 +69,7 @@ def hangman(request):
     global g_secret_word
     global g_convict
     global g_known_word_printer
+    global g_guess_history
 
     __word_length_range = (
         g_game_options.get_word_length_min(),
@@ -74,12 +83,16 @@ def hangman(request):
     g_known_word_printer = KnownWordPrinter(
         convict=g_convict, secret_word=g_secret_word
     )
+    g_guess_history = statistics.GuessHistory()
 
     return render(
         request=request,
         template_name="hangman/hangman.html",
         context=__game_content(
-            {}, g_known_word_printer.get_known_word(), g_convict.get_game_status()
+            {},
+            g_known_word_printer.get_known_word(),
+            g_convict.get_game_status(),
+            g_guess_history.get_history(),
         ),
     )
 
@@ -97,6 +110,7 @@ def guess_letter(request: HttpRequest):
         return validation_content(request, "Game is already over.")
 
     __is_correct = g_convict.guess_letter(letter)
+    g_guess_history.add_guess(letter)
 
     # TODO: use redirect here
     return render(
@@ -112,6 +126,7 @@ def guess_letter(request: HttpRequest):
             },
             g_known_word_printer.get_known_word(),
             g_convict.get_game_status(),
+            g_guess_history.get_history(),
         ),
     )
 
@@ -134,6 +149,7 @@ def guess_word(request):
         return validation_content(request, "Game is already over.")
 
     __is_correct = g_convict.guess_word(__word)
+    g_guess_history.add_guess(__word)
 
     # TODO: use redirect here
     return render(
@@ -149,6 +165,7 @@ def guess_word(request):
             },
             g_known_word_printer.get_known_word(),
             g_convict.get_game_status(),
+            g_guess_history.get_history(),
         ),
     )
 
@@ -159,7 +176,10 @@ def validation_content(request, validation_message):
         template_name="hangman/hangman.html",
         context=validation_error_content(
             __game_content(
-                {}, g_known_word_printer.get_known_word(), g_convict.get_game_status()
+                {},
+                g_known_word_printer.get_known_word(),
+                g_convict.get_game_status(),
+                g_guess_history.get_history(),
             ),
             validation_message,
         ),
