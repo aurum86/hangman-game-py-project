@@ -4,12 +4,12 @@ from ..game.options import *
 import sys
 
 
-class GameOptionsTest(TestCase):
+class DifficultyTest(TestCase):
     @data_provider(lambda: ((1, 1), (4, 2), (7, 3), (10, 4),))
     def test_get_word_length_min(
         self, expected_word_length, assumed_difficulty_level
     ) -> None:
-        __game_options = GameOptions(difficulty_level=assumed_difficulty_level)
+        __game_options = Difficulty(difficulty_level=assumed_difficulty_level)
 
         self.assertEqual(expected_word_length, __game_options.get_word_length_min())
 
@@ -17,6 +17,6 @@ class GameOptionsTest(TestCase):
     def test_get_word_length_max(
         self, expected_word_length, assumed_difficulty_level
     ) -> None:
-        __game_options = GameOptions(difficulty_level=assumed_difficulty_level)
+        __game_options = Difficulty(difficulty_level=assumed_difficulty_level)
 
         self.assertEqual(expected_word_length, __game_options.get_word_length_max())

@@ -5,6 +5,7 @@ from ..words import WordProvider
 from .options import g_game_options
 from ..game import statistics
 from django.views import generic
+from django.http import response
 import collections
 
 
@@ -30,8 +31,8 @@ class KnownWordPrinter:
 
 g_wordProvider = WordProvider()
 __word_length_range = (
-    g_game_options.get_word_length_min(),
-    g_game_options.get_word_length_max(),
+    g_game_options.difficulty.get_word_length_min(),
+    g_game_options.difficulty.get_word_length_max(),
 )
 
 g_secret_word = game.SecretWordFactory(g_wordProvider).create_secret_word(
@@ -51,6 +52,7 @@ def __game_content(
             "word_with_mask": word_with_mask,
             "status_level": game_status,
             "guess_history": guess_history,
+            "options": g_game_options,
         }
     )
 
@@ -65,6 +67,8 @@ def validation_error_content(page_content: dict, error_message: str):
 
 
 def hangman(request):
+    if not request.method == 'GET':
+        return response.HttpResponseNotAllowed(request.method)
 
     global g_secret_word
     global g_convict
@@ -72,8 +76,8 @@ def hangman(request):
     global g_guess_history
 
     __word_length_range = (
-        g_game_options.get_word_length_min(),
-        g_game_options.get_word_length_max(),
+        g_game_options.difficulty.get_word_length_min(),
+        g_game_options.difficulty.get_word_length_max(),
     )
     g_secret_word = game.SecretWordFactory(
         word_provider=g_wordProvider
@@ -98,6 +102,9 @@ def hangman(request):
 
 
 def guess_letter(request: HttpRequest):
+    if not request.method == 'POST':
+        return response.HttpResponseNotAllowed(request.method)
+
     letter = request.POST["letter"]
     letter = letter.lower()
 
@@ -135,10 +142,13 @@ class GamePlay(generic.TemplateView):
     template_name = "hangman/hangman.html"
 
     def get(self, request, *args, **kwargs):
-        return (super().get(request, {}),)
+        return super().get(request, {}),
 
 
 def guess_word(request):
+    if not request.method == 'POST':
+        return response.HttpResponseNotAllowed(request.method)
+
     __word = request.POST["word"]
     __word = __word.lower()
 

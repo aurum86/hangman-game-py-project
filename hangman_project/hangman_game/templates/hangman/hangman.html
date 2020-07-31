@@ -67,6 +67,12 @@
 
                 <h4>The correct word was:</h4>
                 <h2>{{ secret_word }}</h2>
+
+                {% if options.translate_word %}
+                <a href="https://translate.google.com/#view=home&op=translate&sl=la&tl={{ options.target_language }}&text={{ secret_word }}"
+                    target="_blank"
+                >See translation in new page</a>
+                {% endif %}
             {% endif %}
 
             {% if error_message %}
