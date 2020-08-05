@@ -12,10 +12,15 @@ class OptionsForm(forms.Form):
     translate_word = forms.BooleanField(
         label="Translate the word in the end of the game.",
         widget=forms.CheckboxInput(),
-        required=False
+        required=False,
     )
 
-    __TARGET_LANGUAGES = [('lt', "Lithuanian"), ('en', "English"), ('de', "German"), ('ru', "Russian")]
+    __TARGET_LANGUAGES = [
+        ("lt", "Lithuanian"),
+        ("en", "English"),
+        ("de", "German"),
+        ("ru", "Russian"),
+    ]
 
     target_language = forms.ChoiceField(
         label="Select target language for translation",

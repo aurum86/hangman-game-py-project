@@ -33,7 +33,9 @@ class Difficulty:
 
 
 class GameOptions:
-    def __init__(self, difficulty: Difficulty, translate_word: bool, target_language: str):
+    def __init__(
+        self, difficulty: Difficulty, translate_word: bool, target_language: str
+    ):
         self.__difficulty = difficulty
         self.__translate_word = translate_word
         self.__target_language = target_language

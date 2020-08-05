@@ -67,7 +67,7 @@ def validation_error_content(page_content: dict, error_message: str):
 
 
 def hangman(request):
-    if not request.method == 'GET':
+    if not request.method == "GET":
         return response.HttpResponseNotAllowed(request.method)
 
     global g_secret_word
@@ -102,7 +102,7 @@ def hangman(request):
 
 
 def guess_letter(request: HttpRequest):
-    if not request.method == 'POST':
+    if not request.method == "POST":
         return response.HttpResponseNotAllowed(request.method)
 
     letter = request.POST["letter"]
@@ -142,11 +142,11 @@ class GamePlay(generic.TemplateView):
     template_name = "hangman/hangman.html"
 
     def get(self, request, *args, **kwargs):
-        return super().get(request, {}),
+        return (super().get(request, {}),)
 
 
 def guess_word(request):
-    if not request.method == 'POST':
+    if not request.method == "POST":
         return response.HttpResponseNotAllowed(request.method)
 
     __word = request.POST["word"]
