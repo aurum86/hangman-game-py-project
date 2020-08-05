@@ -1,13 +1,14 @@
 from django import forms
 
+DIFFICULTY_CHOICES = [(1, "Easy"), (2, "Normal"), (3, "Hard")]
+
 
 class OptionsForm(forms.Form):
-    __DIFFICULTY_CHOICES = [(1, "Easy"), (2, "Normal"), (3, "Hard")]
 
     difficulty_level = forms.ChoiceField(
         label="Select game difficulty",
         widget=forms.RadioSelect(),
-        choices=__DIFFICULTY_CHOICES,
+        choices=DIFFICULTY_CHOICES,
     )
     translate_word = forms.BooleanField(
         label="Translate the word in the end of the game.",
