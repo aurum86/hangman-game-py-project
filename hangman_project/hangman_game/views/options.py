@@ -39,6 +39,6 @@ def save_options(request):
             g_game_options.translate_word = bool(__form.cleaned_data["translate_word"])
             g_game_options.target_language = str(__form.data["target_language"])
 
-            return get_post_response(view_name="hangman_game:hangman")
+            return get_post_response(view_name="hangman_game:continue_game")
         else:
             return view_game_options(request)

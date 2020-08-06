@@ -30,10 +30,13 @@ class KnownWordPrinter:
         )
 
 
-g_progress = progress.ProgressFactory.create_progress(
-    level=g_game_options.difficulty.difficulty_level
-)
+def create_progress() -> progress.Progress:
+    return progress.ProgressFactory.create_progress(
+        level=g_game_options.difficulty.difficulty_level
+    )
 
+
+g_progress = create_progress()
 
 g_wordProvider = WordProvider()
 __word_length_range = (
@@ -71,6 +74,14 @@ def validation_error_content(page_content: dict, error_message: str):
         {"error_message": error_message,}
     )
     return page_content
+
+
+def continue_game(request):
+    global g_progress
+
+    g_progress = create_progress()
+
+    return hangman(request)
 
 
 def hangman(request):

@@ -9,6 +9,7 @@ app_name = "hangman_game"
 urlpatterns = [
     path("", main.redirect_view, name="hangman_home"),
     path("hangman/", game.hangman, name="hangman"),
+    path("continue_game", game.continue_game, name="continue_game"),
     path("guess_letter", game.guess_letter, name="guess_letter"),
     path("guess_word", game.guess_word, name="guess_word"),
     path("game_options", options.view_game_options, name="game_options"),
