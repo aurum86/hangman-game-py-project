@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from .main import get_post_response
 from ..game import options
+from ..game import progress
 from .. import forms
 
 g_game_options = options.GameOptions(
-    difficulty=options.Difficulty(difficulty_level=1),
+    difficulty=progress.Difficulty(difficulty_level=1),
     translate_word=True,
     target_language="en",
 )

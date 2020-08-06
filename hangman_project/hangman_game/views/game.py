@@ -4,6 +4,7 @@ from ..game import game
 from ..words import WordProvider
 from .options import g_game_options
 from ..game import statistics
+from ..game import progress
 from django.views import generic
 from django.http import response
 import collections
@@ -27,6 +28,11 @@ class KnownWordPrinter:
         return "".join(
             [__known_word[__position] for __position in range(0, __word_length)]
         )
+
+
+g_progress = progress.ProgressFactory.create_progress(
+    level=g_game_options.difficulty.difficulty_level
+)
 
 
 g_wordProvider = WordProvider()
@@ -53,6 +59,7 @@ def __game_content(
             "status_level": game_status,
             "guess_history": guess_history,
             "options": g_game_options,
+            "progress": g_progress,
         }
     )
 
@@ -75,9 +82,12 @@ def hangman(request):
     global g_known_word_printer
     global g_guess_history
 
+    g_progress.evaluate_game_level()
+    __difficulty = progress.Difficulty(g_progress.get_game_level())
+
     __word_length_range = (
-        g_game_options.difficulty.get_word_length_min(),
-        g_game_options.difficulty.get_word_length_max(),
+        __difficulty.get_word_length_min(),
+        __difficulty.get_word_length_max(),
     )
     g_secret_word = game.SecretWordFactory(
         word_provider=g_wordProvider
@@ -118,6 +128,9 @@ def guess_letter(request: HttpRequest):
 
     __is_correct = g_convict.guess_letter(letter)
     g_guess_history.add_guess(letter)
+
+    if g_convict.is_game_finished():
+        g_progress.game_history.add_game_result(__is_correct)
 
     # TODO: use redirect here
     return render(
@@ -160,6 +173,9 @@ def guess_word(request):
 
     __is_correct = g_convict.guess_word(__word)
     g_guess_history.add_guess(__word)
+
+    if g_convict.is_game_finished():
+        g_progress.game_history.add_game_result(__is_correct)
 
     # TODO: use redirect here
     return render(

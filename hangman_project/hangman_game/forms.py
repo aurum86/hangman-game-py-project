@@ -6,7 +6,7 @@ DIFFICULTY_CHOICES = [(1, "Easy"), (2, "Normal"), (3, "Hard")]
 class OptionsForm(forms.Form):
 
     difficulty_level = forms.ChoiceField(
-        label="Select game difficulty",
+        label="Select game initial difficulty",
         widget=forms.RadioSelect(),
         choices=DIFFICULTY_CHOICES,
     )

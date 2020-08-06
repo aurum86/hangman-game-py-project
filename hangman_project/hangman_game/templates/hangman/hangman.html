@@ -17,7 +17,9 @@
     <div class="row">
         <div class="col">
             {% load options %}
-            <p>Difficulty level: {{ options.difficulty.difficulty_level|get_difficulty_title }}</p>
+            <p>Initial difficulty level: {{ options.difficulty.difficulty_level|get_difficulty_title }}</p>
+            <p>Current difficulty level: {{ progress.get_game_level|get_difficulty_title }}</p>
+            <p>Wins and loses: {% for i in progress.get_last_wins_and_loses %} {{ i }}, {% endfor %}</p>
         </div>
     </div>
     <h5 id="motivation">Can you guess the Latin word and avoid the gallows?</h5>
@@ -79,6 +81,12 @@
                     target="_blank"
                 >See translation in new page</a>
                 {% endif %}
+
+                <form action="{% url 'hangman_game:hangman' %}">
+                    <button type="submit" class="btn btn-outline-dark">
+                      Continue game
+                    </button>
+                </form>
             {% endif %}
 
             {% if error_message %}
