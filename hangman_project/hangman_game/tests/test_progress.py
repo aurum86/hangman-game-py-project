@@ -11,7 +11,7 @@ class DifficultyTest(TestCase):
     def test_get_word_length_min(
         self, expected_word_length, assumed_difficulty_level
     ) -> None:
-        __game_options = Difficulty(difficulty_level=assumed_difficulty_level)
+        __game_options = Difficulty(difficulty_level=assumed_difficulty_level, level_min=1, level_max=4)
 
         self.assertEqual(expected_word_length, __game_options.get_word_length_min())
 
@@ -19,7 +19,7 @@ class DifficultyTest(TestCase):
     def test_get_word_length_max(
         self, expected_word_length, assumed_difficulty_level
     ) -> None:
-        __game_options = Difficulty(difficulty_level=assumed_difficulty_level)
+        __game_options = Difficulty(difficulty_level=assumed_difficulty_level, level_min=1, level_max=4)
 
         self.assertEqual(expected_word_length, __game_options.get_word_length_max())
 

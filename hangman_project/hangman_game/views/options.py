@@ -5,7 +5,7 @@ from ..game import progress
 from .. import forms
 
 g_game_options = options.GameOptions(
-    difficulty=progress.Difficulty(difficulty_level=1),
+    difficulty=progress.DifficultyFactory.create_difficulty(difficulty_level=1),
     translate_word=True,
     target_language="en",
 )
@@ -36,8 +36,8 @@ def save_options(request):
             g_game_options.difficulty.difficulty_level = int(
                 __form.cleaned_data["difficulty_level"]
             )
-            g_game_options.translate_word = bool(__form.cleaned_data["translate_word"])
-            g_game_options.target_language = str(__form.data["target_language"])
+            g_game_options.translate_word = __form.cleaned_data["translate_word"]
+            g_game_options.target_language = __form.cleaned_data["target_language"]
 
             return get_post_response(view_name="hangman_game:continue_game")
         else:

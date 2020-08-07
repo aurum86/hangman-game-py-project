@@ -1,4 +1,4 @@
-{% extends "hangman/base.html" %}
+{% extends "hangman/main.html" %}
 
 {% load static %}
 
@@ -16,10 +16,10 @@
     </div>
     <div class="row">
         <div class="col">
-            {% load options %}
+            {% load main %}
             <p>Initial difficulty level: {{ options.difficulty.difficulty_level|get_difficulty_title }}</p>
             <p>Current difficulty level: {{ progress.get_game_level|get_difficulty_title }}</p>
-            <p>Wins and loses: {% for i in progress.get_last_wins_and_loses %} {{ i }}, {% endfor %}</p>
+            <p>Wins and loses: {{ progress.get_last_wins_and_loses|get_bool_list_to_win_loss|join:", " }}</p>
         </div>
     </div>
     <h5 id="motivation">Can you guess the Latin word and avoid the gallows?</h5>

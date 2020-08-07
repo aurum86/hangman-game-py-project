@@ -3,10 +3,9 @@ from . import statistics
 
 
 class Difficulty:
-    __DIFFICULTY_LEVEL_MIN = 1
-    __DIFFICULTY_LEVEL_MAX = 4
-
-    def __init__(self, difficulty_level: int):
+    def __init__(self, difficulty_level: int, level_min: int, level_max: int):
+        self.__level_min = level_min
+        self.__level_max = level_max
         self.difficulty_level = difficulty_level
 
     @property
@@ -16,20 +15,20 @@ class Difficulty:
     @difficulty_level.setter
     def difficulty_level(self, value: int) -> None:
         if value not in range(
-            self.__DIFFICULTY_LEVEL_MIN, self.__DIFFICULTY_LEVEL_MAX + 1
+            self.__level_min, self.__level_max + 1
         ):
             raise Exception("difficulty level ({}) is not valid".format(value))
 
         self.__difficulty_level = value
 
     def get_word_length_min(self) -> int:
-        if self.difficulty_level == self.__DIFFICULTY_LEVEL_MIN:
+        if self.difficulty_level == self.__level_min:
             return 1
 
-        return Difficulty(self.difficulty_level - 1).get_word_length_max() + 1
+        return DifficultyFactory.create_difficulty(self.difficulty_level - 1).get_word_length_max() + 1
 
     def get_word_length_max(self) -> int:
-        if self.difficulty_level == self.__DIFFICULTY_LEVEL_MAX:
+        if self.difficulty_level == self.__level_max:
             return sys.maxsize
 
         return self.get_word_length_min() + 2
@@ -94,6 +93,12 @@ class Progress:
     @property
     def game_history(self) -> statistics.GameHistory:
         return self.__game_history
+
+
+class DifficultyFactory:
+    @classmethod
+    def create_difficulty(cls, difficulty_level: int) -> Difficulty:
+        return Difficulty(difficulty_level=difficulty_level, level_min=1, level_max=4)
 
 
 class ProgressFactory:
