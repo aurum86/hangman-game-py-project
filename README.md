@@ -6,27 +6,22 @@ A conventional hangman game
 
 ## Requirements
 ```bash
-sudo apt-get install python3-pip python3-dev python3-venv python3.8-venv
+sudo apt-get install python3.8 python3-pip python3-dev python3-venv python3.8-venv pipenv
 ```
 
 ## Setup
 
 ### setup the environment
 ```
-pip install --user pipenv
+pip3 install --user pipenv
 ```
 **cd** to project dir
 ```
 # initiate
-# python3 will be used
+# python3 will be selected
 pipenv install --three
-
-pipenv install -r requirements.txt
-```
-## Setup project
-
-```bash
-python manage.py migrate
+# activate the environment
+pipenv shell
 ```
 
 ## Run
