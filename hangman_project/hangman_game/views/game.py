@@ -94,7 +94,9 @@ def hangman(request):
     global g_guess_history
 
     g_progress.evaluate_game_level()
-    __difficulty = progress.DifficultyFactory.create_difficulty(g_progress.get_game_level())
+    __difficulty = progress.DifficultyFactory.create_difficulty(
+        g_progress.get_game_level()
+    )
 
     __word_length_range = (
         __difficulty.get_word_length_min(),

@@ -14,9 +14,7 @@ class Difficulty:
 
     @difficulty_level.setter
     def difficulty_level(self, value: int) -> None:
-        if value not in range(
-            self.__level_min, self.__level_max + 1
-        ):
+        if value not in range(self.__level_min, self.__level_max + 1):
             raise Exception("difficulty level ({}) is not valid".format(value))
 
         self.__difficulty_level = value
@@ -25,7 +23,12 @@ class Difficulty:
         if self.difficulty_level == self.__level_min:
             return 1
 
-        return DifficultyFactory.create_difficulty(self.difficulty_level - 1).get_word_length_max() + 1
+        return (
+            DifficultyFactory.create_difficulty(
+                self.difficulty_level - 1
+            ).get_word_length_max()
+            + 1
+        )
 
     def get_word_length_max(self) -> int:
         if self.difficulty_level == self.__level_max:
