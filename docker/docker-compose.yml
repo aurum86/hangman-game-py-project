@@ -8,7 +8,7 @@ services:
   web:
     container_name: hanger_game.local
     hostname: hanger_game.local
-    image: hangman_game:latest
+    image: aurum86/hangman-game-py:latest
     restart: unless-stopped
     build:
       context: ..
